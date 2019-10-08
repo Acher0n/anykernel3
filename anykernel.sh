@@ -11,6 +11,9 @@ eval $(cat /tmp/anykernel/props | grep -v '\.')
 ## AnyKernel install
 dump_boot;
 
+# Use the provided dtb
+mv /tmp/anykernel/dtb /tmp/anykernel/split_img/
+
 # Change skip_initramfs to want_initramfs if Magisk is detected
 if [ -d $ramdisk/.backup ]; then
   ui_print " ";
