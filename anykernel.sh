@@ -16,7 +16,7 @@ if [ -d $ramdisk/.backup ]; then
   ui_print " ";
   ui_print "Magisk detected!";
   ui_print "Patching kernel so that reflashing Magisk is not necessary...";
-  gzip -dc < /tmp/anykernel/Image.gz | sed -e 's/skip_initramfs/want_initramfs/g' | gzip > /tmp/anykernel/Image.gz.tmp;
+  pigz -p4 -dc < /tmp/anykernel/Image.gz | sed -e 's/skip_initramfs/want_initramfs/g' | pigz -p4 > /tmp/anykernel/Image.gz.tmp;
   mv /tmp/anykernel/Image.gz.tmp /tmp/anykernel/Image.gz;
 fi
 
