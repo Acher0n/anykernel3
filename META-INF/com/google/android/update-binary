@@ -82,7 +82,7 @@ abort() {
   ui_print "$@";
   debugging;
   restore_env;
-  if [ ! -f anykernel.sh -o "$(file_getprop anykernel.sh do.cleanuponabort 2>/dev/null)" == 1 ]; then
+  if [ ! -f anykernel.sh -o "$(file_getprop props do.cleanuponabort 2>/dev/null)" == 1 ]; then
     cleanup;
   fi;
   exit 1;
@@ -121,7 +121,7 @@ if [ -f banner ]; then
   ui_print " " " ";
 fi;
 
-ui_print "$(file_getprop anykernel.sh kernel.string)";
+ui_print "$(file_getprop props kernel.string)";
 if [ -f version ]; then
   ui_print " ";
   ui_printfile version;
@@ -175,11 +175,11 @@ elif [ ! "$(getprop ro.product.device 2>/dev/null)" -a ! "$(getprop ro.build.pro
   }
 fi;
 
-if [ "$(file_getprop anykernel.sh do.devicecheck)" == 1 ]; then
+if [ "$(file_getprop props do.devicecheck)" == 1 ]; then
   ui_print "Checking device...";
   device=$(getprop ro.product.device);
   product=$(getprop ro.build.product);
-  for testname in $(file_getprop anykernel.sh 'device.name.*'); do
+  for testname in $(file_getprop props 'device.name.*'); do
     if [ "$device" == "$testname" -o "$product" == "$testname" ]; then
       ui_print "$testname" " ";
       match=1;
@@ -191,7 +191,7 @@ if [ "$(file_getprop anykernel.sh do.devicecheck)" == 1 ]; then
   fi;
 fi;
 
-supported_ver=$(file_getprop anykernel.sh supported.versions | $bb tr -d '[:space:]');
+supported_ver=$(file_getprop props supported.versions | $bb tr -d '[:space:]');
 if [ "$supported_ver" ]; then
   ui_print "Checking Android version...";
   android_ver=$(file_getprop /system/build.prop ro.build.version.release);
@@ -217,7 +217,7 @@ if [ "$supported_ver" ]; then
   fi;
 fi;
 
-supported_lvl=$(file_getprop anykernel.sh supported.patchlevels | $bb grep -oE '[0-9]{4}-[0-9]{2}|-');
+supported_lvl=$(file_getprop props supported.patchlevels | $bb grep -oE '[0-9]{4}-[0-9]{2}|-');
 if [ "$supported_lvl" ]; then
   ui_print "Checking Android security patch level...";
   android_lvl=$(file_getprop /system/build.prop ro.build.version.security_patch);
@@ -247,7 +247,7 @@ if [ $? != 0 ]; then
   abort;
 fi;
 
-if [ "$(file_getprop anykernel.sh do.modules)" == 1 ]; then
+if [ "$(file_getprop props do.modules)" == 1 ]; then
   ui_print " " "Pushing modules...";
   $bb mount -o rw,remount -t auto /system;
   $bb mount -o rw,remount -t auto /vendor 2>/dev/null;
@@ -282,7 +282,7 @@ fi;
 debugging;
 restore_env;
 
-if [ "$(file_getprop anykernel.sh do.cleanup)" == 1 ]; then
+if [ "$(file_getprop props do.cleanup)" == 1 ]; then
   cleanup;
 fi;
 
