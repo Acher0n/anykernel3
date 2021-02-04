@@ -16,6 +16,14 @@ eval $(cat $home/props | grep -v '\.')
 # import patching functions/variables - see for reference
 . tools/ak3-core.sh;
 
+if [ -d $ramdisk/.backup ]; then
+    mv $home/overlay.d $ramdisk/overlay.d;
+    chmod -R 750 $ramdisk/overlay.d/*;
+    chown -R root:root $ramdisk/overlay.d/*;
+    chmod -R 755 $ramdisk/overlay.d/sbin/*;
+    chown -R root:root $ramdisk/overlay.d/sbin/*;
+fi
+
 install() {
   ## AnyKernel install
   dump_boot;
